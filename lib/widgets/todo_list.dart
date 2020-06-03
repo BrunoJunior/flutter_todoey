@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertodoey/widgets/todo_row.dart';
+import 'package:fluttertodoey/models/task.dart';
 
-class TodoList extends StatelessWidget {
-  final List<String> todos;
-  const TodoList(this.todos);
+class TasksList extends StatelessWidget {
+  final List<Task> tasks;
+  final void Function(int index) onTaskToggled;
+  const TasksList({@required this.tasks, this.onTaskToggled});
 
   @override
-  Widget build(BuildContext context) => ListView(
-        children: todos.map((todo) => TodoRow(todo)).toList(growable: false),
+  Widget build(BuildContext context) => ListView.builder(
+        itemCount: tasks.length,
+        itemBuilder: (context, index) => ListTile(
+          title: Text(
+            tasks[index].name,
+            style: tasks[index].done
+                ? const TextStyle(decoration: TextDecoration.lineThrough)
+                : null,
+          ),
+          trailing: Checkbox(
+            value: tasks[index].done,
+            onChanged:
+                null == onTaskToggled ? null : (v) => onTaskToggled(index),
+            activeColor: Colors.blueAccent,
+          ),
+        ),
       );
 }
