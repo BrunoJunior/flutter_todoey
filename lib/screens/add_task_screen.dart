@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertodoey/models/task.dart';
+import 'package:fluttertodoey/models/tasks_list.dart';
+import 'package:provider/provider.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  final void Function(Task task) onAddPressed;
-
-  AddTaskScreen({@required this.onAddPressed});
+  const AddTaskScreen();
 
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }
 
-const InputBorder _inputBorder = UnderlineInputBorder(
-  borderSide: const BorderSide(width: 5.0, color: Colors.lightBlueAccent),
-);
-
 class _AddTaskScreenState extends State<AddTaskScreen> {
   final TextEditingController _controller = TextEditingController();
+
+  static const InputBorder _inputBorder = UnderlineInputBorder(
+    borderSide: const BorderSide(width: 5.0, color: Colors.lightBlueAccent),
+  );
 
   @override
   void dispose() {
@@ -51,7 +50,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             width: double.infinity,
             child: FlatButton(
               onPressed: () {
-                widget.onAddPressed(Task(name: _controller.text));
+                Provider.of<TasksList>(context, listen: false)
+                    .add(_controller.text);
                 _controller.clear();
               },
               color: Colors.lightBlueAccent,

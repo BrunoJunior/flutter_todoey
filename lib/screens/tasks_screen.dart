@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertodoey/models/task.dart';
+import 'package:fluttertodoey/models/tasks_list.dart';
 import 'package:fluttertodoey/screens/add_task_screen.dart';
-import 'package:fluttertodoey/widgets/todo_list.dart';
+import 'package:fluttertodoey/widgets/tasks_list_view.dart';
+import 'package:provider/provider.dart';
 
-class TasksScreen extends StatefulWidget {
+class TasksScreen extends StatelessWidget {
   static final id = 'tasks';
 
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-const BorderRadius _topRounded = BorderRadius.vertical(
-  top: Radius.circular(20.0),
-);
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [];
+  static const BorderRadius _topRounded = const BorderRadius.vertical(
+    top: const Radius.circular(20.0),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +47,11 @@ class _TasksScreenState extends State<TasksScreen> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Text(
-                  '${tasks.length} Tasks',
-                  style: const TextStyle(color: Colors.white, fontSize: 20.0),
+                Consumer<TasksList>(
+                  builder: (_, tasksList, __) => Text(
+                    '${tasksList.length} Tasks',
+                    style: const TextStyle(color: Colors.white, fontSize: 20.0),
+                  ),
                 ),
               ],
             ),
@@ -67,12 +63,7 @@ class _TasksScreenState extends State<TasksScreen> {
                 color: Colors.white,
                 borderRadius: _topRounded,
               ),
-              child: TasksList(
-                tasks: tasks,
-                onTaskToggled: (taskId) {
-                  setState(() => tasks[taskId] = Task.toggled(tasks[taskId]));
-                },
-              ),
+              child: const TasksListView(),
             ),
           )
         ],
@@ -87,9 +78,7 @@ class _TasksScreenState extends State<TasksScreen> {
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-                child: AddTaskScreen(
-                  onAddPressed: (task) => setState(() => tasks.insert(0, task)),
-                ),
+                child: const AddTaskScreen(),
               ),
             ),
             shape: const RoundedRectangleBorder(borderRadius: _topRounded),
