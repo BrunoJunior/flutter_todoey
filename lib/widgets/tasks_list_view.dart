@@ -14,6 +14,7 @@ class TasksListView extends StatelessWidget {
           final task = tasksList.getAt(index);
           return ListTile(
             onLongPress: () => tasksList.remove(index),
+            onTap: () => tasksList.toggle(index),
             title: Text(
               task.name,
               style: task.done
